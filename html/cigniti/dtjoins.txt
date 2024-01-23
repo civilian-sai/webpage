@@ -1,0 +1,362 @@
+create table DEPARTMENTS (  
+  deptno        number,  
+  name          varchar2(50) not null,  
+  location      varchar2(50),  
+  constraint pk_departments primary key (deptno)  
+);
+
+create table EMPLOYEES (  
+  empno             number,  
+  name              varchar2(50) not null,  
+  job               varchar2(50),  
+  manager           number,  
+  hiredate          date,  
+  salary            number(7,2),  
+  commission        number(7,2),  
+  deptno           number,  
+  constraint pk_employees primary key (empno),  
+  constraint fk_employees_deptno foreign key (deptno) 
+      references DEPARTMENTS (deptno)  
+);
+
+insert into departments (deptno,name, location) values
+   (10,'Finance','New York');
+
+insert into departments (deptno,name, location) values
+   (20,'Development','San Jose');
+
+insert into EMPLOYEES 
+   (empno,name, job, salary, deptno) 
+   values
+   (111,'Sam Smith','Programmer', 
+    5000, 
+  (select deptno 
+  from departments 
+  where name = 'Development'));
+
+insert into EMPLOYEES 
+   (empno,name, job, salary, deptno) 
+   values
+   (222,'Mara Martin','Analyst', 
+   6000, 
+   (select deptno 
+   from departments 
+   where name = 'Finance'));
+
+insert into EMPLOYEES 
+   (empno,name, job, salary, deptno) 
+   values
+   (333,'Yun Yates','Analyst', 
+   5500, 
+   (select deptno 
+   from departments 
+   where name = 'Development'));
+
+
+select min(salary),max(salary) from employees;
+
+select deptno,sum(salary),avg(salary),min(salary),max(salary),count(*), count(nvl(commission,0)) from employees
+group by deptno;
+select * from employees;
+select lower(name),upper(name) from employees;
+
+
+
+
+
+
+
+
+SELECT * FROM EMPLOYEES;
+
+SELECT DEPTNO,COUNT(*) FROM EMPLOYEES
+--WHERE SALARY > 5000
+GROUP BY DEPTNO
+HAVING COUNT(*) > 1
+ORDER BY DEPTNO;
+
+
+DEPTNO  JOB
+10       ANALYST
+10       ANALYST
+10       ANALYST
+
+10       ADMIN
+10       ADMIN
+
+10       PROGRAMMER
+
+
+20       ANALYST
+20       ANALYST
+20       ANALYST
+20       ADMIN
+20       ADMIN
+20       PROGRAMMER
+
+
+
+DEPTNO  JOB
+10       ANALYST     3
+10       ADMIN       2
+10       PROGRAMMER  1
+10       	     6
+20       ANALYST     3
+20       ADMIN       2
+20       PROGRAMMER  1
+20       	     6
+         ANALYST     6
+         ADMIN       4
+         PROGRAMMER  2
+                     12
+
+(A,B)=> A,B
+        A
+    
+
+(A,B) => A,B
+         A
+         B
+SELECT * FROM EMPLOYEES;
+
+SELECT DEPTNO,JOB,COUNT(*)
+FROM EMPLOYEES
+GROUP BY ROLLUP(DEPTNO,JOB)
+ORDER BY DEPTNO;
+
+JOINS
+- SQL 1999 JOINS
+  - NATURAL JOIN
+  - JOIN USING
+  - JOIN ON
+     - LEFT OUTER JOIN ON
+     - RIGHT OUTER JOIN ON
+     - FULL OUTER JOIN ON
+  - SELF JOIN ON
+
+- ORACLE PROPRIETARY JOINS
+ - EQUI JOIN   has something in common between the tables
+ - NON-EQUI JOIN    has no something in common between the tables
+ - LEFT OUTER JOIN
+ - RIGHT OUTER JOIN
+
+here we cant able to get full outer join, this is the main difference
+
+ - SELF JOIN
+
+DEPARTMENTS
+DEPTNO   DNAME       LOC
+ 10      ADMIN       HYDERABAD
+ 20      ACCOUNTS    MUMBAI
+
+EMPLOYEES
+EMPNO  ENAME  SALARY   DEPTNO
+111    A      8000       10
+222    B      9000       10
+333    C      10000      20
+444    D      20000      20
+
+GRADES
+GRADE     LOWSAL     HISAL
+A          5000      9999
+B          10000     15000
+C          15001     22000
+
+SELECT E.EMPNO,E.ENAME,E.SALARY,G.GRADE
+FROM EMPLOYEES E, GRADES G
+WHERE E.SALARY BETWEEN G.LOWSAL AND G.HISAL;
+
+
+
+ SELECT E.EMPNO,E.ENAME, E.DEPTNO, D.DNAME, D.LOC
+ FROM EMPLOYEES E, DEPARTMENTS D
+ WHERE E.DEPTNO = D.DEPTNO;
+
+
+OUTER JOIN
+- LEFT OUTER JOIN
+
+ select e.empno, e.name, d.deptno, d.name from employees e, departments d where e.deptno=d.deptno(+);
+
+- RIGHT OUTER JOIN
+
+ select e.empno, e.name, d.deptno, d.name from employees e, departments d where e.deptno(+)=d.deptno;
+
+-SELF JOIN
+
+WORKER
+
+EMPNO  ENAME  SALARY   DEPTNO MGR
+111    A      8000       10    333
+222    B      9000       10    333
+333    C      10000      20    444
+444    D      20000      20
+
+
+MANAGER  // THIS IS JUST FOR IMAGINATION 
+
+EMPNO  ENAME  SALARY   DEPTNO MGR
+111    A      8000       10    333
+222    B      9000       10    333
+333    C      10000      20    444
+444    D      20000      20
+
+
+SELECT worker.ename || ' reports to ' || manager.ename frolm employees worker,employees manager where worker.mgr=manager.empno;
+
+
+
+Data types
+----------
+CHAR - CHAR(20) - HELLO - 2000
+VARCHAR2 - VARCHAR2(20) - 4000
+NCHAR
+NVARCHAR2
+LONG - 2GB
+RAW - 2GB
+LARGE OBJECTS - 4GB
+-------------
+INTERNAL LOBS
+  - CLOB
+  - BLOB
+  - NCLOB
+EXTERNAL LOBS
+  - BFILE
+-----------------------------------------
+NUMBER - NUMBER(P,S) - NUMBER(10,2) => 12345678.99
+         NUMBER(5) - 12345
+DATE - SYSDATE
+TIMESTAMP 
+TIMESTAMP WITH TIMEZONE 
+TIMESTAMP WITH LOCALTIMEZONE 
+INTERVAL YEAR TO MONTH 
+INTERVAL DAY TO SECOND
+
+------------------------------------------------
+ROWID
+ROWNUM  // it gets changed accordingly
+
+CONSTRAINTS
+-----------
+NOT NULL
+UNIQUE
+PRIMARY KEY
+FOREIGN KEY
+CHECK
+
+TYPES OF CONSTRAINTS 
+----------------------
+- COLUMN LEVEL
+- TABLE LEVEL
+
+create table EMPLOYEES (  
+  empno             number,  
+  name              varchar2(50) not null,  // COLUMN LEVEL CONSTRAINT
+  job               varchar2(50),  
+  manager           number,  
+  hiredate          date,  
+  salary            number(7,2),  
+  commission        number(7,2),  
+  deptno           number,  
+  constraint chk_employees check (salary > 3000),
+  constraint pk_employees primary key (empno), // TABLE LEVEL 
+  constraint fk_employees_deptno foreign key (deptno) 
+      references DEPARTMENTS (deptno)  on delete cascade
+);
+
+
+
+THERE ARE TWO DATA DICTINARIES
+  - user_constraint
+  - user_cons_something
+
+
+
+
+dictionaries vs tables
+
+dictionaries are the way the oracle server does the job and tables are userdefined one
+insertion or any operation that are done on a table are done by the internal triggers 
+
+
+insert
+insert
+insert
+insert
+insert
+add constraint to the table
+insert -> throw error
+
+
+
+
+DATABASE OBJECTS  - 5
+-----------------
+- TABLE
+- VIEW
+- INDEX
+- SEQUENCE
+- SYNONYMN
+
+UNIQUE AND PRIMARY KEY
+
+BY DEFAULT ORACLE DATABASE CREATES B-TREE INDEXING
+
+CREATE INDEX IDX ON EMPLOYEES(NAME);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+username:- sys as sysdba
+password :- [ press enter key ]
+SQL>CREATE USER SUCHIDBA IDENTIFIED BY DBA;
+SQL>GRANT ALL PRIVILEGES TO SUCHIDBA;
+SQL>GRANT CREATE RESOURCE, CREATE SESSION TO SUCHIDBA;
+SQL> CONNECT
+USERNAME :- SUCHIDBA
+PASSWORD :- DBA
+SQL> SHOW USER;
+SUCHIDBA
+
+
+
+
+single row operators <, <, =  
+
+
+
+in which clauses we can usde the subquery like where, from
+
+
+INLINE VIEW(TOP N ANALYSIS OR HERE WE WRITE THE SUBQUERY AFTER FROM)
+
+display first max sal
+
+select rownum,empno,ename,sal from(select rownum,empno,ename,sal from employees order bby sal desc) where rownum=1;//here we cant use rownum=2 or 3 to get second highest number.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

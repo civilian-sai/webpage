@@ -1,0 +1,81 @@
+<html>
+    <head>
+        <title>apna dukaan</title>
+    <style>
+        .hi{
+            align-items: right;
+        }
+    </style>
+    </head>
+    <body bgcolor="grey">
+        <script type="text/javascript">
+            function alrt(){
+                var name=document.myform.text.value;  
+	            var password=document.myform.password.value;  
+                if(document.myform.text.value=="")
+                {
+                    alert("incorrect username"+name);
+                }
+                else if (name.length < 2 || name.length > 20)
+	{
+         alert("Name length should be more than 2 and less than 21");
+         return false;
+	 }
+
+    else if(password.length<6)
+	{  
+	  alert("Password must be at least 6 characters long.");  
+          return true;  
+	} 
+          
+
+           else{
+                confirm("do you wanna save the details");
+                open("file:///C:/Users/saiya/OneDrive/Desktop/html/project3.html");
+            }
+           /*setTimeout(
+
+function(){
+    //confirm("do you wanna save the details");
+    open("file:///C:/Users/saiya/OneDrive/Desktop/html/project3.html");
+},2500);*/
+        }
+         
+            
+        </script>
+        <h1 align="center">
+            <font size="17" color="pink" ><i>log-in page</i></font>
+        </h1>
+        <pre>
+
+
+                                                                                                    <img src="https://cdn3.iconfinder.com/data/icons/school-and-education-13/32/user_profile_person_staff_student-128.png" class="hi" >
+
+  
+
+        </pre>
+        <form name="myform">
+        <table align="center">
+            <tr>
+                <td>
+                    username:<input type="text" id="text" name="text">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    password:<input type="password" id="password" name="password">
+                </td>
+            </tr>
+        </table>
+        <pre>
+
+
+
+        </pre>
+        <p align="center">
+        <input type="submit" name="submit" value="get into" onclick="alrt()">
+        <input type="reset" name="reset">
+        </p>
+        </form>
+    </body>
+</html>
